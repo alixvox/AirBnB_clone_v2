@@ -13,7 +13,7 @@ class FileStorage:
         if cls:
             temp = {}
             for key in self.__objects.keys():
-                if cls in key:
+                if cls.__name__ in key:
                     temp[key] = self.__objects[key]
             return temp
         else:
@@ -65,6 +65,6 @@ class FileStorage:
                     return
 
     def close(self):
-        """Saves and closes the storage"""
+        """closes the storage"""
         self.reload()
         
