@@ -140,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
                 elif arg[1].lstrip('-').isdigit() == True:
                     arg[1] = int(arg[1])
                     setattr(new_instance, arg[0], arg[1])
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
