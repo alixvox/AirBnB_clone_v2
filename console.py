@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -33,11 +33,10 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end="")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -114,22 +113,22 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class """
+        """ Create an object of any class"""
         i = 0
-        argv = args.split(" ")
-        if not argv:
+        arguments = args.split(" ")
+        if not arguments:
             print("** class name missing **")
             return
-        elif argv[0] not in HBNBCommand.classes:
+        elif arguments[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[argv[0]]()
-        for keyvalue in argv:
+        new_instance = HBNBCommand.classes[arguments[0]]()
+        for kv in arguments:
             if i == 0:
                 i += 1
                 continue
-            if "=" in keyvalue:
-                arg = keyvalue.split("=")
+            if "=" in kv:
+                arg = kv.split("=")
                 if arg[1][0] == '"':
                     arg[1] = arg[1].replace('_', ' ')
                     arg[1] = arg[1][1:-1]
@@ -137,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
                 elif '.' in arg[1]:
                     arg[1] = float(arg[1])
                     setattr(new_instance, arg[0], arg[1])
-                elif arg[1].lstrip('-').isdigit() == True:
+                elif arg[1].lstrip('-').isdigit() is True:
                     arg[1] = int(arg[1])
                     setattr(new_instance, arg[0], arg[1])
         storage.new(new_instance)
@@ -146,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_create(self):
         """ Help information for the create method """
-        print("Creates a class of any type with parameters")
+        print("Creates a class of any type")
         print("[Usage]: create <className>\n")
 
     def do_show(self, args):
@@ -298,7 +297,7 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] !=  ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '\"':
@@ -337,6 +336,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
